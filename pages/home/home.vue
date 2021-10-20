@@ -1,5 +1,8 @@
 <template>
   <view>
+    <view class="my-search-box">
+      <my-search @click="goToSearch"></my-search>
+    </view>
     <!-- 轮播图区域 -->
     <swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="1000" circular="true">
       <swiper-item v-for="(item,index) in swiperList" :key="index">
@@ -26,7 +29,8 @@
             </image>
           </navigator>
           <view class="floot-right-images">
-            <navigator class="floot-right-item" v-for="(img,i2) in item.product_list" :key="i2" v-if="i2 !== 0" :url="img.url">
+            <navigator class="floot-right-item" v-for="(img,i2) in item.product_list" :key="i2" v-if="i2 !== 0"
+              :url="img.url">
               <image :src="img.image_src" :style="{width: img.image_width + 'rpx'}" mode="widthFix"></image>
             </navigator>
           </view>
@@ -53,6 +57,11 @@
       this.getFlootList()
     },
     methods: {
+      goToSearch() {
+        uni.navigateTo({
+          url:'/subpkg/search/search'
+        })
+      },
       async getSwiperList() {
         const {
           data: res
@@ -133,5 +142,11 @@
     // flex-wrap: wrap;
     flex-wrap: wrap;
     justify-content: space-around;
+  }
+
+  .my-search-box {
+    position: sticky;
+    top: 0;
+    z-index: 999;
   }
 </style>
