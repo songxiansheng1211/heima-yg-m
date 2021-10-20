@@ -99,8 +99,8 @@
 		},
 		data() {
 			return {
-				show: false,
-				showSync: false,
+				show: true,
+				showSync: true,
 				searchVal: ''
 			}
 		},
@@ -215,7 +215,7 @@
 </script>
 
 <style lang="scss" scoped>
-	$uni-searchbar-height: 36px;
+	$uni-searchbar-height: 32px;
 
 	.uni-searchbar {
 		/* #ifndef APP-NVUE */
@@ -225,6 +225,7 @@
 		position: relative;
 		padding: $uni-spacing-col-base;
 		// background-color: $uni-bg-color;
+    background-color: #C00000;
 	}
 
 	.uni-searchbar__box {

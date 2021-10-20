@@ -1,10 +1,12 @@
 <template>
   <view>
+    <my-search @click="goToSearch"></my-search>
     <view class="scroll-view-container">
       <!-- left -->
       <scroll-view class="scrool-left" scroll-y="true" :style="{height: vh + 'px'}">
         <block v-for="(item,index) in cateList" :key="index">
-          <view class="scrool-left-item-view" :class="active === index ? 'active' : ''" @click="changeCate(index)">{{item.cat_name}}</view>
+          <view class="scrool-left-item-view" :class="active === index ? 'active' : ''" @click="changeCate(index)">
+            {{item.cat_name}}</view>
         </block>
       </scroll-view>
       <!-- right -->
@@ -12,12 +14,13 @@
         <view v-for="(item2,index) in cateLevel2" :key="index">
           <view class="cate-level2-item">/{{item2.cat_name}}/</view>
           <view class="cate-level3">
-            <view class="cate-level3-item" v-for="(item3,index) in item2.children" :key="index" @click="goGoodsList(item3)">
+            <view class="cate-level3-item" v-for="(item3,index) in item2.children" :key="index"
+              @click="goGoodsList(item3)">
               <image :src="item3.cat_icon"></image>
               <text>{{item3.cat_name}}</text>
             </view>
           </view>
-          </view>
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -37,7 +40,7 @@
     onLoad() {
       // 获取当前使用设备（手机）的信息
       const sysInfo = uni.getSystemInfoSync()
-      this.vh = sysInfo.windowHeight
+      this.vh = sysInfo.windowHeight - 50
       this.getCateList()
     },
     methods: {
@@ -45,7 +48,7 @@
         const {
           data: res
         } = await uni.$http.get('/api/public/v1/categories')
-        if(res.meta.status !== 200) {
+        if (res.meta.status !== 200) {
           return uni.$showMsg()
         } else {
           this.cateList = res.message
@@ -57,11 +60,16 @@
         this.cateLevel2 = this.cateList[index].children
         // 只是设置0不生效 因为值没有发生改变
         // 所以在0-1之间切换
-        this.scrollTop = this.scrollTop === 0 ? 1 :  0
+        this.scrollTop = this.scrollTop === 0 ? 1 : 0
       },
       goGoodsList(item) {
         uni.navigateTo({
-          url:'/subpkg/goods_list/goods_list?cid=' + item.cat_id
+          url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
+        })
+      },
+      goToSearch() {
+        uni.navigateTo({
+          url:'/subpkg/search/search'
         })
       }
     }
@@ -99,15 +107,18 @@
         }
       }
     }
+
     .cate-level2-item {
       text-align: center;
       font-size: 12px;
       font-weight: 700;
       padding: 15px 0;
     }
+
     .cate-level3 {
       display: flex;
       flex-wrap: wrap;
+
       .cate-level3-item {
         width: 33.33%;
         display: flex;
@@ -115,10 +126,12 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 10px;
+
         image {
           width: 60px;
           height: 60px;
         }
+
         text {
           font-size: 12px;
         }
