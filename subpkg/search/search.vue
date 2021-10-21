@@ -34,7 +34,6 @@
       };
     },
     onLoad() {
-      console.log(uni.getStorageSync('kw'));
       this.historyList = JSON.parse(uni.getStorageSync('kw') || '[]')
     },
     computed: {
