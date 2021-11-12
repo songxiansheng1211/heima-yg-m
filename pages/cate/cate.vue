@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import tarBar from '../../mixins/tabbar-mixins.js'    
   export default {
     data() {
       return {
@@ -37,6 +38,7 @@
         scrollTop: 0
       };
     },
+    mixins:[tarBar],
     onLoad() {
       // 获取当前使用设备（手机）的信息
       const sysInfo = uni.getSystemInfoSync()

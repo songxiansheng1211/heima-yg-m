@@ -5,12 +5,14 @@
 </template>
 
 <script>
+  import tarBar from '../../mixins/tabbar-mixins.js'
 	export default {
 		data() {
 			return {
 				
 			};
-		}
+		},
+    mixins:[tarBar]
 	}
 </script>
 

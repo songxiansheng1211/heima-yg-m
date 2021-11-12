@@ -1,5 +1,5 @@
 <template>
-  <view v-if="goods_info.goods_name">
+  <view v-if="goods_info.goods_name" class="goods-detail">
     <!-- 轮播 -->
     <swiper indicator-dots="true" autoplay="true" interval="3000" duration="1000" circular="true">
       <swiper-item v-for="(item,index) in goods_info.pics" :key="index">
@@ -23,35 +23,40 @@
     </view>
     <rich-text :nodes="goods_info.goods_introduce"></rich-text>
     <view class="goods-bottom-button">
-      <uni-goods-nav :fill="true"  :options="options" :buttonGroup="buttonGroup"  @click="onClick" @buttonClick="buttonClick" />
+      <uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick"
+        @buttonClick="buttonClick" />
     </view>
   </view>
 </template>
 
 <script>
   // import uniGoodsNav from '@/uni_modules/uni-goods-nav/components/uni-goods-nav/uni-goods-nav.vue'
+  import {
+    mapState,
+    mapMutations,
+    mapGetters
+  } from 'vuex'
   export default {
     data() {
       return {
         goods_info: {},
-        options:[
-          {
+        options: [{
             icon: 'shop',
             text: '店铺'
           },
           {
             icon: 'cart',
-            text: '购物车'
+            text: '购物车',
+            info: null
           }
         ],
-        buttonGroup:[
-          {
-            text:'加入购物车',
-            backgroundColor:'#ff0000',
-            color:'#fff'
+        buttonGroup: [{
+            text: '加入购物车',
+            backgroundColor: '#ff0000',
+            color: '#fff'
           },
           {
-            text:'立即购买',
+            text: '立即购买',
             backgroundColor: '#ffa200',
             color: '#fff'
           }
@@ -65,7 +70,23 @@
 
       this.getGoodsDetial(options.goods_id)
     },
+    computed: {
+      ...mapState('m_cart', ['cart']),
+      ...mapGetters('m_cart', ['total'])
+    },
+    watch: {
+      total: {
+        handler(newVal) {
+          const result = this.options.find(item => item.text === '购物车')
+          if (result) {
+            result.info = newVal
+          }
+        },
+        immediate: true
+      }
+    },
     methods: {
+      ...mapMutations('m_cart', ['addCart']),
       async getGoodsDetial(id) {
         const {
           data: res
@@ -82,14 +103,25 @@
         })
       },
       onClick(i) {
-        if(i.content.text === '购物车') {
+        if (i.content.text === '购物车') {
           uni.switchTab({
-            url:'/pages/cart/cart'
+            url: '/pages/cart/cart'
           })
         }
       },
       buttonClick(i) {
-        console.log(23,i);
+        console.log(i);
+        if (i.content.text === '加入购物车') {
+          const cartInfo = {
+            goods_id: this.goods_info.goods_id,
+            goods_name: this.goods_info.goods_name,
+            goods_price: this.goods_info.goods_price,
+            goods_count: 1,
+            goods_small_logo: this.goods_info.goods_small_logo,
+            goods_state: true
+          }
+          this.addCart(cartInfo)
+        }
       }
     },
     filters: {
@@ -101,13 +133,19 @@
 </script>
 
 <style lang="scss">
+  .goods-detail {
+    padding-bottom: 50px;
+  }
+
   swiper {
     height: 750rpx;
+
     image {
       width: 100%;
       height: 100%;
     }
   }
+
   .goods-property {
     padding: 10px;
 
@@ -144,6 +182,7 @@
       color: gray;
     }
   }
+
   .goods-bottom-button {
     position: fixed;
     bottom: 0;

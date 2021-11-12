@@ -42,6 +42,7 @@
 </template>
 
 <script>
+  import tarBar from '../../mixins/tabbar-mixins.js'
   export default {
     data() {
       return {
@@ -51,6 +52,7 @@
         flootList: []
       };
     },
+    mixins:[tarBar],
     onLoad() {
       this.getSwiperList()
       this.getCatitems()
@@ -108,12 +110,16 @@
 
 <style lang="scss" scoped>
   swiper {
-    height: 330rpx;
+    height: 750rpx;
     //   swiper-item,
-    //   image {
-    //     height: 100%;
-    //     width: 100%;
-    //   }
+      // image {
+      //   height: 100%;
+      //   width: 100%;
+      // }
+      image {
+        width: 100%;
+        height: 100%;
+      }
   }
 
   .catitems {

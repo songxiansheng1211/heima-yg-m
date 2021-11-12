@@ -27,7 +27,8 @@
       "enablePullDownRefresh": false
     }
 
-  }],
+  }
+    ],
   // 分包
   "subPackages": [{
     "root": "subpkg",
@@ -37,7 +38,6 @@
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
-
     }, {
       "path": "goods_list/goods_list",
       "style": {
